@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>TAITAN Info - Elite API Platform</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* Global & Reset */
+        :root {
+            --primary-color: #8BC34A; /* Lite Green/Lime - New Vibrant Color */
+            --telegram-color: #0088cc;
+            --background-dark: #222831; /* Deep Dark Blue-Gray */
+            --text-light: #EEEEEE;
+            --card-bg: #393E46; /* Slightly lighter card background */
+            --shadow-dark: rgba(0, 0, 0, 0.8);
+            --primary-glow: rgba(139, 195, 74, 0.4); /* Lite Green Glow */
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--background-dark);
+            color: var(--text-light);
+            line-height: 1.6;
+            overflow-x: hidden;
+            /* Enforce minimum width to mimic desktop behavior */
+            min-width: 1200px; 
+        }
+
+        /* Utility Class for Layout */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header & Navigation */
+        header {
+            background-color: #2D333B;
+            padding: 15px 0;
+            border-bottom: 3px solid var(--primary-color);
+            box-shadow: 0 4px 15px var(--shadow-dark);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* Logo and Animation */
+        .logo-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo-svg {
+            width: 35px;
+            height: 35px;
+            fill: var(--primary-color);
+            animation: pulse 1.8s infinite cubic-bezier(0.4, 0, 0.6, 1);
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.8; transform: scale(1.1); }
+        }
+
+        .logo-text {
+            font-size: 1.6em;
+            font-weight: 800;
+            margin-left: 10px;
+            color: var(--text-light);
+        }
+
+        /* Navigation */
+        nav a {
+            color: var(--text-light);
+            text-decoration: none;
+            margin-left: 35px;
+            font-weight: 600;
+            transition: color 0.3s, border-bottom 0.3s, transform 0.3s;
+            padding-bottom: 5px;
+        }
+
+        nav a:hover {
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--primary-color);
+            transform: translateY(-2px);
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 120px 20px 80px;
+            background: radial-gradient(circle at top right, #39463A 0%, var(--background-dark) 70%); 
+        }
+
+        .hero h1 {
+            font-size: 4.2em;
+            color: var(--primary-color);
+            margin-bottom: 5px;
+            text-shadow: 0 4px 8px rgba(139, 195, 74, 0.4);
+            font-weight: 800;
+            letter-spacing: 1px;
+        }
+
+        .hero p {
+            font-size: 1.4em;
+            max-width: 900px;
+            margin: 0 auto 50px;
+            color: #ccc;
+            font-weight: 300;
+        }
+
+        /* CTA Buttons */
+        .cta-group {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+        }
+
+        .cta-button {
+            padding: 15px 40px;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 700;
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            display: inline-flex;
+            align-items: center;
+            font-size: 1.1em;
+            border: 2px solid transparent;
+            text-transform: uppercase;
+        }
+
+        /* Primary Button: View Docs (Main Action) */
+        .cta-primary {
+            background-color: var(--primary-color);
+            color: var(--background-dark);
+            border-color: var(--primary-color);
+        }
+        .cta-primary:hover {
+            background-color: #79A841;
+            transform: translateY(-6px) scale(1.02);
+            box-shadow: 0 10px 25px var(--primary-glow);
+        }
+
+        /* Secondary Button: Contact (Support/Inquiry) */
+        .cta-secondary {
+            background-color: transparent;
+            color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+        .cta-secondary:hover {
+            background-color: var(--primary-color);
+            color: var(--background-dark);
+            transform: translateY(-6px) scale(1.02);
+            box-shadow: 0 10px 25px var(--primary-glow);
+        }
+
+        /* API Services Section */
+        .api-services {
+            padding: 80px 0;
+            text-align: center;
+        }
+
+        .api-services h2 {
+            font-size: 3em;
+            margin-bottom: 50px;
+            color: var(--primary-color);
+            font-weight: 800;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .api-list {
+            display: grid;
+            /* Ensured cards remain wide for desktop lock */
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); 
+            gap: 30px;
+            padding: 0 20px;
+        }
+
+        .api-card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 30px;
+            text-align: left;
+            box-shadow: 0 6px 15px var(--shadow-dark);
+            transition: transform 0.5s cubic-bezier(0.19, 1, 0.22, 1), box-shadow 0.5s;
+            border-left: 5px solid var(--primary-color);
+            position: relative;
+        }
+
+        /* Enhanced API Card Hover Effect with Glow */
+        .api-card:hover {
+            transform: translateY(-12px);
+            box-shadow: 0 18px 35px var(--primary-glow), 0 0 20px var(--primary-color);
+            z-index: 10;
+        }
+
+        .api-card h3 {
+            color: var(--text-light);
+            margin-top: 0;
+            font-size: 1.6em;
+            border-bottom: 1px solid #444;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .api-card p {
+            font-size: 1em;
+            color: #b0b0b0;
+        }
+        
+        /* Special Card Style */
+        .api-card.special-card {
+            background-color: var(--primary-color); 
+            border-color: #fff; 
+            transform: scale(1.03); 
+            box-shadow: 0 10px 25px var(--primary-glow), 0 0 15px var(--primary-color);
+        }
+
+        .api-card.special-card:hover {
+            transform: translateY(-10px) scale(1.05);
+        }
+
+        .api-card.special-card h3 {
+            color: var(--background-dark);
+            border-color: var(--background-dark);
+        }
+        .api-card.special-card p {
+            color: var(--background-dark); 
+            font-weight: 600;
+        }
+        
+        /* --- Developer Skills Section (Renamed and Re-branded) --- */
+        .developer-skills {
+            background-color: #2D333B;
+            padding: 80px 0;
+            text-align: center;
+        }
+
+        .skills-grid {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 40px;
+            margin-top: 40px;
+        }
+
+        .skill-item {
+            width: 150px;
+            text-align: center;
+            padding: 20px;
+            border-radius: 10px;
+            background-color: var(--card-bg);
+            box-shadow: 0 4px 10px var(--shadow-dark);
+            transition: transform 0.3s, box-shadow 0.3s;
+            animation: fadeIn 1s ease-out;
+            border-bottom: 3px solid var(--primary-color);
+        }
+        
+        .skill-item:hover {
+            transform: scale(1.1);
+            box-shadow: 0 10px 20px var(--primary-glow);
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .skill-icon {
+            width: 55px;
+            height: 55px;
+            margin-bottom: 10px;
+            fill: var(--primary-color);
+            transition: fill 0.3s;
+        }
+        
+        .skill-item:hover .skill-icon {
+            fill: var(--text-light);
+        }
+
+        .skill-item p {
+            font-weight: 600;
+            color: var(--text-light);
+            margin: 0;
+        }
+        /* --- End Developer Skills Section --- */
+
+        /* Documentation & Contact Section */
+        .docs-section {
+            background-color: #2D333B;
+            padding: 50px 0;
+            margin: 80px 0;
+            border-top: 1px solid var(--card-bg);
+            border-bottom: 1px solid var(--card-bg);
+        }
+        .docs-section h2 {
+            margin-bottom: 30px;
+        }
+        
+        .docs-placeholder {
+            background-color: #1A1D20;
+            padding: 40px;
+            border-radius: 10px;
+            border: 2px dashed var(--primary-color);
+            text-align: center;
+            font-style: italic;
+            color: #aaa;
+            box-shadow: inset 0 0 10px var(--primary-glow);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 30px;
+            background-color: #2D333B;
+            color: #999;
+            border-top: 3px solid var(--primary-color);
+        }
+
+        footer a {
+            color: var(--telegram-color);
+            text-decoration: none;
+            font-weight: 700;
+            transition: color 0.3s;
+        }
+        footer a:hover {
+            color: var(--primary-color);
+        }
+
+        /*
+        * DESKTOP LOCK IMPLEMENTATION:
+        * We are removing all typical media queries that adjust layout for smaller screens.
+        * The `min-width: 1200px;` on the `body` tag handles the "lock."
+        */
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container">
+            <div class="logo-container">
+                <svg class="logo-svg" viewBox="0 0 24 24">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/>
+                </svg>
+                <span class="logo-text">TAITAN Info</span>
+            </div>
+            <nav>
+                <a href="#services">API Catalogue</a>
+                <a href="#skills">Developer Skills</a>
+                <a href="#documentation">Documentation</a>
+                <a href="https://t.me/taitan_op" target="_blank">Telegram Channel</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <h1>Elite Information & Utility APIs</h1>
+            <p>High-speed, **reliable**, and comprehensive data services for Identity Verification, Telecom, Financial, and Social Media applications. **Engineered for seamless integration.**</p>
+            <div class="cta-group">
+                <a href="#documentation" class="cta-button cta-primary">Explore Documentation</a>
+                <a href="https://t.me/oxmzoo" target="_blank" class="cta-button cta-secondary">Get API Keys (Contact @oxmzoo)</a>
+            </div>
+        </section>
+
+        <section id="services" class="api-services">
+            <div class="container">
+                <h2>Our High-Performance API Suite</h2>
+                <div class="api-list">
+                    <div class="api-card">
+                        <h3>Aadhar Info API</h3>
+                        <p>Real-time identity verification and data retrieval based on Aadhar card credentials for secure, regulated processes.</p>
+                    </div>
+
+                    <div class="api-card">
+                        <h3>Mobile Number Info API</h3>
+                        <p>Accurate carrier, circle, and registration data lookup for any mobile number with high reliability.</p>
+                    </div>
+
+                    <div class="api-card">
+                        <h3>Aadhar to Family API</h3>
+                        <p>Advanced service to map familial relationships linked with an Aadhar identity for background checks.</p>
+                    </div>
+                    
+                    <div class="api-card">
+                        <h3>Pakistani Number Info API</h3>
+                        <p>Specialized telecom intelligence for Pakistani mobile numbers, including network and status data.</p>
+                    </div>
+                    
+                    <div class="api-card">
+                        <h3>Instagram Report API</h3>
+                        <p>Generate detailed, non-public analytics and reports for Instagram profiles, ideal for business use.</p>
+                    </div>
+
+                    <div class="api-card">
+                        <h3>IMEI Info API</h3>
+                        <p>Instantaneous lookup for device specifications and history via IMEI number for asset tracking.</p>
+                    </div>
+                    
+                    <div class="api-card">
+                        <h3>Instagram Media Downloader</h3>
+                        <p>Robust utility for downloading public Instagram photos and videos programmatically and at scale.</p>
+                    </div>
+
+                    <div class="api-card">
+                        <h3>Vehicle Info API</h3>
+                        <p>Access comprehensive vehicle registration and owner details instantly for regulatory compliance.</p>
+                    </div>
+                    
+                    <div class="api-card">
+                        <h3>UPI Validation API</h3>
+                        <p>Validate and fetch information related to a specific UPI ID for secure financial applications and payments.</p>
+                    </div>
+                    
+                    <div class="api-card">
+                        <h3>Number to UPI Mapping</h3>
+                        <p>A fast endpoint to link and verify a registered mobile number with its corresponding UPI ID.</p>
+                    </div>
+
+                    <div class="api-card special-card">
+                        <h3>+ Many More Powerful Tools</h3>
+                        <p>Contact us on Telegram for the full, expanded list of our **exclusive data services** and custom solutions!</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="skills" class="developer-skills">
+            <div class="container">
+                <h2>Engineered by TAITAN Info</h2> 
+                <p style="font-size: 1.2em; max-width: 800px; margin: 0 auto 50px; color: #ccc; font-weight: 300;">
+                    Our APIs are crafted with a deep understanding of modern software architecture, ensuring **robustness, scalability, and clean code** across multiple stacks.
+                </p>
+                <div class="skills-grid">
+                    
+                    <div class="skill-item">
+                        <svg class="skill-icon" viewBox="0 0 24 24"><path d="M15.454 4.195c-.328-.158-.72-.18-1.077-.07-2.61.802-3.877 3.635-4.57 6.47-.197.802-.455 1.636-.78 2.44-.067.164-.13.33-.19.497.558.006 1.115-.005 1.674-.002.348 0 .666-.19.824-.503.242-.477.534-.94.85-1.4.37-.53.774-1.037 1.21-1.51.528-.57 1.144-.813 1.838-.72.33.044.604.286.732.61.127.324.032.693-.24 1.01-1.12 1.303-2.14 2.763-3.14 4.23-.23.336-.466.67-.685 1.01-.19.29-.427.56-.708.77-.354.267-.8.368-1.24.285-2.22-.43-4.14-2.58-5.06-4.78-.174-.424-.225-.89-.13-1.35.3-1.45.98-2.83 1.95-4.04.54-.66 1.18-1.26 1.9-1.78.226-.16.48-.27.75-.32.067-.006.13-.02.2-.02.48 0 .96.01 1.44.02.32 0 .58-.23.63-.56.09-.54-.06-1.1-.42-1.52-1.17-1.36-2.02-2.95-2.73-4.63-.12-.3-.02-.63.22-.85.24-.22.58-.28.89-.14 3.1 1.36 5.86 3.6 7.84 6.22.6.78 1.08 1.6 1.4 2.47.07.19.14.39.2.58.55-.003 1.11.002 1.67.002.34 0 .66-.19.82-.51.12-.24.28-.48.42-.73.68-1.18 1.2-2.48 1.55-3.8.12-.46.06-.97-.18-1.41-.33-.61-.75-1.18-1.25-1.7-1.27-1.34-2.75-2.47-4.42-3.32-.43-.22-.92-.28-1.4-.18z"/></svg>
+                        <p>Python</p>
+                    </div>
+                    
+                    <div class="skill-item">
+                        <svg class="skill-icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-.78-15.5l-3.23 6.94 1.8.84 3.23-6.94-1.8-.84zm1.56 1.63l3.23 6.94-1.8.84-3.23-6.94 1.8-.84zM12 18c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z"/></svg>
+                        <p>Java</p>
+                    </div>
+                    
+                    <div class="skill-item">
+                        <svg class="skill-icon" viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm3.17 14.83H10.83V9.17h4.34v7.66zM12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5z"/></svg>
+                        <p>Node.js</p>
+                    </div>
+                    
+                    <div class="skill-item">
+                        <svg class="skill-icon" viewBox="0 0 24 24"><path d="M12 1.996l-9 2.115v9.76l9 3.016 9-3.016v-9.76l-9-2.115zm-4 14.47l-1-1v-4.52l1-1h1l1 1v4.52l-1 1zm8-1v-4.52l-1-1h-1l-1 1v4.52l1 1h1zm-5-5.52l-1-1v-1.5l1-1h2l1 1v1.5l-1 1h-2z"/></svg>
+                        <p>HTML5</p>
+                    </div>
+                    
+                    <div class="skill-item">
+                        <svg class="skill-icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 17c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7zM10.5 7.5h3c.83 0 1.5.67 1.5 1.5v3h-1.5v-3h-3v-1.5zm0 5.5h3v-1.5h-3V13z"/></svg>
+                        <p>CSS3</p>
+                    </div>
+                    
+                    <div class="skill-item" style="border-bottom-color: var(--telegram-color);">
+                        <svg class="skill-icon" style="fill: var(--telegram-color);" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+                        <p>And More...</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="documentation" class="docs-section">
+            <div class="container">
+                <h2>Complete Integration Guides & Documentation</h2>
+                <div class="docs-placeholder">
+                    <p style="font-size: 1.2em; font-weight: 700; color: var(--primary-color);">**[INTERACTIVE API DOCUMENTATION COMING SOON]**</p>
+                    <p style="font-size: 1.1em; color: #ccc;">This space is reserved for our detailed, interactive documentation (using **Swagger UI**, **Redoc**, or custom guides) to provide developers with live examples, endpoint details, and code snippets in all supported languages.</p>
+                    <p style="font-size: 1em; color: var(--primary-color); font-weight: 600;">Start your integration now by contacting **@oxmzoo** on Telegram to receive your API key and direct documentation access.</p>
+                </div>
+            </div>
+        </section>
+        
+        <section id="contact" class="api-services" style="padding-top: 20px; padding-bottom: 60px;">
+            <div class="container">
+                <h2>Ready to Integrate?</h2>
+                <p style="font-size: 1.2em; max-width: 700px; margin: 0 auto 40px; font-weight: 300; color: #ccc;">Join our community for real-time updates and reach out directly for partnership, competitive pricing, and dedicated support.</p>
+                <div class="cta-group">
+                    <a href="https://t.me/taitan_op" target="_blank" class="cta-button cta-primary" style="background-color: var(--telegram-color); border-color: var(--telegram-color);">Join Telegram Channel</a>
+                    <a href="https://t.me/oxmzoo" target="_blank" class="cta-button cta-secondary">Contact Developer: @oxmzoo</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 TAITAN Info. | Connect with us on <a href="https://t.me/taitan_op" target="_blank">Telegram</a> for the latest updates.</p>
+    </footer>
+
+</body>
+</html>
